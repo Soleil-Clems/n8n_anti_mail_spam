@@ -1,0 +1,216 @@
+{
+  "name": "n8n_learning",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=RÔLE\nTu es un agent de modération de messages pour mon site portfolio.\n\nTa mission est d’analyser chaque message reçu et de déterminer s’il est sérieux ou nuisible.\n\nCONTEXTE\nJe suis développeur full-stack, étudiant à Epitech Marseille et stagiaire chez Librasoft.\nJe suis ouvert aux opportunités professionnelles.\n\nCRITÈRES DE MESSAGE NUISIBLE\n- spam ou démarchage automatique\n- insultes ou propos agressifs\n- menaces\n- contenu illégal\n- message sans rapport ou vide\n\nACTION\nAnalyse le message et retourne UNIQUEMENT un JSON valide, sans aucun texte autour.\n\nFORMAT DE RÉPONSE OBLIGATOIRE :\n{\n  \"allowed\": true | false,\n  \"subject\": \"un titre au message\"\n  \"score\": 1 à 5 sur 5,\n  \"commentaire\": \"court commentaire gemini\"\n  \"message\": \"message exacte reçu\"\n}\n \n\nIMPORTANT\n- Ne contacte personne\n- N’envoie aucun email\n- Ne fais aucune action\n- Fournis uniquement le JSON\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5c761db8-a0b5-4617-bcf3-3000e59614f4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -544,
+        0
+      ],
+      "id": "e1a728eb-3d94-4e79-b7a7-bb44239ff9a6",
+      "name": "When chat message received",
+      "webhookId": "bba061d9-e879-4c60-bfc8-ce0856fe5bb6"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        384
+      ],
+      "id": "36130077-30c0-485b-979f-2e5cbd80bf71",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        288
+      ],
+      "id": "ed8ea764-cef3-4dc8-a773-1a5e0e8d2356",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "8b9RCw4fG6xIm3KW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Récupère l'output du premier item\nlet text = $json.output;\n\n// Supprime les backticks\ntext = text.replace(/```json\\n|```/g, \"\").trim();\n\n// Parse le JSON\nconst data = JSON.parse(text);\n\n// Retourne le JSON pur\nreturn [{ json: data }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        0
+      ],
+      "id": "4c7c52f8-5868-483c-bbf2-a47839675c0c",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2a586e48-7655-4767-98ff-f6dfde231365",
+              "leftValue": "={{$json.allowed}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        0
+      ],
+      "id": "0ca014ce-5577-4f4d-8d1f-1b5f89173e5d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "ouisolclems@gmail.com",
+        "subject": "=Portfolio: {{$json.subject}}",
+        "emailType": "text",
+        "message": "=Score : {{$json.score}}\nMessage : {{$json.message}}\nCommentaire : {{$json.commentaire}}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        -96
+      ],
+      "id": "17edf3a4-9b66-4387-8748-fe617d2af441",
+      "name": "Send a message",
+      "webhookId": "3c0566a0-e65f-48ad-ab7d-1ae0d15db9f0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "3VDdumYMFDYKtG9K",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "a8ec0cc0-2ed6-4193-b505-ce263dc0f883",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "133dc86de9e88315f220358a41fe2cf67ddbbb7440a477a73a2734cd2f05a415"
+  },
+  "id": "6osano3JW6dCUW7VLK96x",
+  "tags": []
+}
