@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -288,
-        -128
+        -688,
+        32
       ],
-      "id": "f7e33b5a-f62d-4999-9297-180ae90db34c",
+      "id": "e8e1d2a5-2ef4-421f-bde3-a02c9fa1bece",
       "name": "Schedule Trigger"
     },
     {
@@ -27,37 +27,11 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        400,
-        -160
+        0,
+        0
       ],
-      "id": "d036e65c-a725-41ee-9c09-dc20d7770e23",
+      "id": "5c761db8-a0b5-4617-bcf3-3000e59614f4",
       "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-3.5-turbo",
-          "mode": "list",
-          "cachedResultName": "gpt-3.5-turbo"
-        },
-        "builtInTools": {},
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        272,
-        192
-      ],
-      "id": "07de73fe-f972-456a-83ec-29b70314d319",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "dPhg00FdOPhh3ZWC",
-          "name": "OpenAi account"
-        }
-      }
     },
     {
       "parameters": {
@@ -66,10 +40,10 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.4,
       "position": [
-        -288,
-        208
+        -688,
+        368
       ],
-      "id": "ac762e63-4426-413e-83c0-ea1a57c554fc",
+      "id": "e1a728eb-3d94-4e79-b7a7-bb44239ff9a6",
       "name": "When chat message received",
       "webhookId": "bba061d9-e879-4c60-bfc8-ce0856fe5bb6"
     },
@@ -78,10 +52,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        448,
-        224
+        48,
+        384
       ],
-      "id": "abc59dd7-aaa2-4823-bbf6-b2321a4a0d01",
+      "id": "36130077-30c0-485b-979f-2e5cbd80bf71",
       "name": "Simple Memory"
     },
     {
@@ -91,12 +65,31 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.2,
       "position": [
-        560,
-        48
+        160,
+        208
       ],
-      "id": "cc37e4e5-2e5c-4931-8c73-0b43b16c6633",
+      "id": "f22b4f9c-7cf1-44e3-8ab6-bec2b9091f44",
       "name": "Send a message in Gmail",
       "webhookId": "5ed66f02-9a6e-49cd-b138-d2cbb05c60ca"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        208
+      ],
+      "id": "ed8ea764-cef3-4dc8-a773-1a5e0e8d2356",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bTnrHYA6DbgPaLNV",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -107,17 +100,6 @@
           {
             "node": "AI Agent",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -155,6 +137,17 @@
           }
         ]
       ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -162,11 +155,10 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "bcb9b103-856c-4da3-b2d5-c60a846faa72",
+  "versionId": "138cc158-c6f5-44c0-b1cf-e72b021f0567",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "92a367ebde69f8067c48d1266348cf8e9dbc629ce03f7f513563ce3c9df4b93e"
+    "instanceId": "133dc86de9e88315f220358a41fe2cf67ddbbb7440a477a73a2734cd2f05a415"
   },
-  "id": "eCce8xQgoeny0NNB0ChUd",
+  "id": "6osano3JW6dCUW7VLK96x",
   "tags": []
 }
