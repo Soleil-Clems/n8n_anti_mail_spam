@@ -2,15 +2,15 @@
 
 up:
 			@echo "=== Demarrage du conteneur... ==="
-			docker compose up
+			docker compose -f .docker/compose.yml up
 
 down:
 		@echo "=== Arret du conteneur... ==="
-		docker compose down -v && clear
+		docker compose -f .docker/compose.yml down -v && clear
 
 build:
 			@echo "=== Construction de l'image... ==="
-			docker compose build --no-cache
+			docker compose -f .docker/compose.yml build --no-cache
 
 help:
 	@echo "Utilisation :"
