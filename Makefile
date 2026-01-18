@@ -12,6 +12,15 @@ build:
 			@echo "=== Construction de l'image... ==="
 			docker compose -f .docker/compose.yml build --no-cache
 
+stopall:
+	@echo "=== Arret de tous les containers actifs... ==="
+	@if [ -n "$$(docker ps -q)" ]; then \
+		docker stop $$(docker ps -q); \
+	else \
+		echo "Aucun container actif."; \
+	fi
+
+
 help:
 	@echo "Utilisation :"
 	@echo "  make build    - Construit l'image"
