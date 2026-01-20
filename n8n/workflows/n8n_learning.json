@@ -1,5 +1,5 @@
 {
-  "name": "n8n_learning",
+  "name": "n8n_anti_mail_spam",
   "nodes": [
     {
       "parameters": {
