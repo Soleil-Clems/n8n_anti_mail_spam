@@ -21,7 +21,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   n8n:
-    image: docker.n8n.io/n8nio/n8n
+    build:
+      context: .
     container_name: n8n
     restart: always
     ports:
@@ -51,16 +52,16 @@ services:
       - WEBHOOK_URL=${N8N_PROTOCOL}://${DOMAIN_NAME}:${PORT}/
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
       - TZ=${GENERIC_TIMEZONE}
-      - N8N_WORKFLOW_STORAGE_MODE=filesystem
-      - N8N_WORKFLOW_FILESYSTEM_PATH=/workflows
       - N8N_ENV_ACCESS_ALLOWLIST=GEMINI_API_KEY,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,EMAIL_RECEIVER
       - N8N_ALLOW_ENV_VARIABLES=true
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - N8N_USER_FOLDER=/home/node/.n8n
+
     env_file:
       - .env
     volumes:
-      - n8n_data:/home/node/.n8n
-      - ../n8n/workflows:/workflows
+      - ../n8n_data:/home/node/.n8n
     networks: 
       - n8n-services-net
 
